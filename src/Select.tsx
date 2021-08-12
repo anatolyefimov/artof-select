@@ -48,6 +48,7 @@ const SelectComponent: React.ForwardRefRenderFunction<
   ref
 ): JSX.Element => {
   const [isOpen, setIsOpen] = useState<boolean>(ariaExpanded);
+  console.log(isOpen);
   const [search, setSearch] = useState<string>("");
   const [typing, setTyping] = useState<string>("");
 
@@ -79,7 +80,10 @@ const SelectComponent: React.ForwardRefRenderFunction<
 
   // aria-expanded changes
   useEffect(() => {
-    ariaExpanded !== isOpen && toggleDropdown(ariaExpanded);
+    if (ariaExpanded !== isOpen) {
+      console.log("place 5");
+      toggleDropdown(ariaExpanded);
+    }
   }, [ariaExpanded]);
 
   if (process.env.NODE_ENV !== "production") {
@@ -137,7 +141,7 @@ const SelectComponent: React.ForwardRefRenderFunction<
       // close the dropdown after onChange, if only option was available
       if (visibleOptions.length === 1) {
         visibleField.current?.focus();
-
+        console.log("place 1");
         toggleDropdown(false);
         setSearch("");
       }
@@ -146,7 +150,7 @@ const SelectComponent: React.ForwardRefRenderFunction<
 
       // close dropdown on change value
       visibleField.current?.focus();
-
+      console.log("place 2");
       toggleDropdown(false);
       setSearch("");
 
@@ -157,6 +161,7 @@ const SelectComponent: React.ForwardRefRenderFunction<
 
   const onFocusElement = (): void => {
     if (!restProps.disabled) {
+      console.log("place 7");
       toggleDropdown(true);
       visibleField.current?.focus();
     }
@@ -171,6 +176,7 @@ const SelectComponent: React.ForwardRefRenderFunction<
       renderValue && target.closest(".select__value_custom");
 
     if (isButton && !restProps.disabled && !isCustomValue) {
+      console.log("place 8");
       toggleDropdown(!isOpen);
     }
   };
@@ -181,6 +187,7 @@ const SelectComponent: React.ForwardRefRenderFunction<
 
   const onSearchFocus = (): void => {
     if (!restProps.disabled) {
+      console.log("place 9");
       toggleDropdown(true);
     }
   };
@@ -231,6 +238,7 @@ const SelectComponent: React.ForwardRefRenderFunction<
       if (isCurrent) {
         if (inFocus && [" ", "arrowdown", "enter"].includes(key)) {
           e.preventDefault();
+          console.log("place 10");
           toggleDropdown(true);
 
           if (allowSearch) {
@@ -238,6 +246,7 @@ const SelectComponent: React.ForwardRefRenderFunction<
           }
         }
       } else if (isOpen) {
+        console.log("place 3");
         toggleDropdown(false);
       }
 
@@ -298,6 +307,7 @@ const SelectComponent: React.ForwardRefRenderFunction<
 
   const toggleDropdown = (state: boolean): void => {
     setIsOpen(state);
+    console.log("this dropdown", state);
 
     if (onToggle && select.current) {
       if (multiple) {
@@ -361,7 +371,10 @@ const SelectComponent: React.ForwardRefRenderFunction<
         <SelectLabel
           id={restProps.id}
           label={label}
-          toggleDropdown={!restProps.disabled ? toggleDropdown : undefined}
+          toggleDropdown={(value) => {
+            console.log("one og the weirds");
+            toggleDropdown(value);
+          }}
         />
       )}
 
@@ -407,7 +420,10 @@ const SelectComponent: React.ForwardRefRenderFunction<
             <SelectLabel
               id={restProps.id}
               label={label}
-              toggleDropdown={!restProps.disabled ? toggleDropdown : undefined}
+              toggleDropdown={(value) => {
+                console.log("one of the weirds: label");
+                toggleDropdown(value);
+              }}
             />
           )}
 
@@ -431,7 +447,10 @@ const SelectComponent: React.ForwardRefRenderFunction<
             options={options}
             visibleOptions={visibleOptions}
             isOpen={isOpen}
-            toggleDropdown={toggleDropdown}
+            toggleDropdown={(value) => {
+              console.log("one og the weirds: dropdown");
+              toggleDropdown(value);
+            }}
             search={search}
             setSearch={setSearch}
             data-testid={restProps["data-testid"]}

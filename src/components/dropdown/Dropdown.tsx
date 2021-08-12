@@ -12,6 +12,7 @@ import {
   SelectOption,
   SelectSingle,
 } from "../../Select.types";
+import { popperOffsets } from "@popperjs/core";
 
 let typingTimeOut: ReturnType<typeof setTimeout>;
 
@@ -60,6 +61,7 @@ export const Dropdown: React.FC<Props> = React.memo(function dropdown({
   const [typing, setTyping] = useState<string>("");
 
   const [dropdown, setDropdown] = useState<HTMLDivElement | null>(null);
+  console.log(dropdown);
 
   const { styles, attributes } = usePopper(visibleFieldRef, dropdown, {
     placement: dropdownPosition,
@@ -72,6 +74,7 @@ export const Dropdown: React.FC<Props> = React.memo(function dropdown({
       },
     ],
   });
+  console.log(visibleFieldRef);
 
   // bind click outside
   useEffect(() => {
@@ -155,6 +158,7 @@ export const Dropdown: React.FC<Props> = React.memo(function dropdown({
         isLast
       ) {
         e.preventDefault();
+        console.log("this one");
         toggleDropdown(false);
         visibleFieldRef?.focus();
         setSearch("");
@@ -163,6 +167,7 @@ export const Dropdown: React.FC<Props> = React.memo(function dropdown({
       // close dropdown on escape
       else if (key === "escape") {
         e.preventDefault();
+        console.log("this one");
         toggleDropdown(false);
         visibleFieldRef?.focus();
         setSearch("");
@@ -198,7 +203,9 @@ export const Dropdown: React.FC<Props> = React.memo(function dropdown({
   };
 
   const onClickOutside = (event: MouseEvent): void => {
+    console.log(visibleFieldRef);
     if (!visibleFieldRef?.parentNode?.contains(event.target as Node)) {
+      console.log("this one outside");
       toggleDropdown(false);
       setSearch("");
     }

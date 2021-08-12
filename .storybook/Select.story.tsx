@@ -40,7 +40,38 @@ const SelectMiltipleExample: React.FC<SelectMultiple> = (props) => {
   );
 }
 
+const renderSelect = () => {
+
+  const [selected, setSelected] = useState<string[] | undefined>();
+
+  const onChange = (values: string[]): void => {
+    setSelected(values);
+  };
+
+  const [renderSelect, setRenderSelect] = useState(false);
+  
+
+  return (
+    <div className="tags__select-wrapper">
+      <button onClick={() => setRenderSelect(!renderSelect)} > adsgagfsdg </button>
+      {renderSelect && <Select
+        asTags={true}
+        multiple={true}
+        onChange={onChange}
+        options={[{label: 'sdgdsfg', value: 'dsgsdg'}]}
+        value={selected}
+        autoFocus={true}
+        aria-expanded={true}
+      />}
+    </div>
+  );
+};
+
 storiesOf("artof-select", module)
+
+  .add("own test", () => {
+    return renderSelect()
+  })
   .add("Single [default]", () => {
     return (
       <div className="story__select-wrapper">
